@@ -4,30 +4,11 @@ window.onload = async () => {
   });
 
   const $list = contentList.reduce(($fragment, item) => {
-    const $p = createItem(item);
-    $fragment.appendChild($p);
+    const $copiedItem = new CopiedItemElement(item);
+    $fragment.appendChild($copiedItem);
 
     return $fragment;
   }, document.createDocumentFragment());
 
   document.body.appendChild($list);
 };
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.action) {
-    case "APPEND": {
-      /**
-       * TODO: new item create
-       */
-      const $p = createItem(request.content);
-      document.body.appendChild($p);
-    }
-  }
-});
-
-function createItem(item) {
-  const $p = document.createElement("p");
-  $p.innerText = item;
-
-  return $p;
-}
