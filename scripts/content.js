@@ -1,6 +1,6 @@
 "use strict";
 
-document.addEventListener("copy", async (evt) => {
+document.addEventListener("copy", async () => {
   const text = await navigator.clipboard.readText();
 
   await chrome.runtime.sendMessage(
@@ -12,10 +12,10 @@ class Request {
   static ACTIONS = {
     NEW_CONTENT: "NEW_CONTENT",
   };
-  static create(action, content) {
+  static create(action, payload) {
     return {
       action,
-      content,
+      payload,
     };
   }
 }
