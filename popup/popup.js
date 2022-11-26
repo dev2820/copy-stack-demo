@@ -1,4 +1,5 @@
 window.onload = async () => {
+  const $itemList = document.getElementById("item-list");
   const contentList = await chrome.runtime.sendMessage(
     Request.create(Request.ACTIONS.GET_CONTENT_LIST)
   );
@@ -10,7 +11,7 @@ window.onload = async () => {
     return $fragment;
   }, document.createDocumentFragment());
 
-  document.body.appendChild($list);
+  $itemList.appendChild($list);
 };
 
 class Request {
