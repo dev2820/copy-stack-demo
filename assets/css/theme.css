@@ -1,0 +1,14 @@
+:root {
+  --body-width: 280px;
+}
+
+body {
+  width: var(--body-width);
+}
+h1#title {
+  display: block;
+  text-align: center;
+}
+#item-list:empty::before {
+  content: "copy list empty";
+}
