@@ -11,16 +11,17 @@ class CopiedItemElement extends HTMLElement {
   }
 
   render(data) {
-    const $container = document.createElement("div");
-    const $copyButton = document.createElement("button");
+    const $template = document.getElementById("copied-item");
+    const $container = document.importNode($template.content, true);
+    const $content = $container.querySelector(".content");
+    const $copyButton = $container.querySelector(".copy");
 
     $copyButton.addEventListener("click", () => {
       window.navigator.clipboard.writeText(data);
     });
     $copyButton.textContent = "copy";
-    $container.textContent = data;
+    $content.textContent = data;
 
-    $container.appendChild($copyButton);
     this.appendChild($container);
   }
 }

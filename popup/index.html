@@ -1,6 +1,24 @@
 <html>
+  <head>
+    <link href="/assets/css/theme.css" rel="stylesheet"></link>
+  </head>
   <body>
-    <h1>hello</h1>
+    <h1 id="title">Copy Stack</h1>
+    <hr/>
+    <div id="item-list"></div>
+    <template id="copied-item">
+      <style>
+          .container {
+            padding-bottom:0.25rem;
+            margin-bottom:0.5rem;
+            border-bottom:1px solid black;
+          }
+      </style>
+      <div class="container">
+        <div class="content"></div>
+        <button class="copy">copy</button>
+      </div>
+    </template>
     <script
       type="text/javascript"
       src="/components/CopiedItemElement.js"
