@@ -12,3 +12,7 @@ h1#title {
 #item-list:empty::before {
   content: "copy list empty";
 }
+#item-list {
+  height: 400px;
+  overflow-y: scroll;
+}
