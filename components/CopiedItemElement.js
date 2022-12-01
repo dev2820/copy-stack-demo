@@ -15,12 +15,17 @@ class CopiedItemElement extends HTMLElement {
     const $container = document.importNode($template.content, true);
     const $content = $container.querySelector(".content");
     const $copyButton = $container.querySelector(".copy");
+    const $deleteButton = $container.querySelector(".delete");
 
     $copyButton.addEventListener("click", () => {
-      window.navigator.clipboard.writeText(data);
+      window.navigator.clipboard.writeText(data.content);
     });
-    $copyButton.textContent = "copy";
-    $content.textContent = data;
+    $deleteButton.addEventListener("click", () => {
+      window.dispatchEvent(
+        new CustomEvent("deleteitem", { detail: { id: data.id } })
+      );
+    });
+    $content.textContent = data.content;
 
     this.appendChild($container);
   }
