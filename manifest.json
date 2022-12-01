@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Copy Stack",
   "description": "chrome extension that allow you to stack and recall copied content",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "action": {
     "default_popup": "popup/index.html",
     "default_icon": "assets/images/128.png"
