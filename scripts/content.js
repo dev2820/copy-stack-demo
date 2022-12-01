@@ -3,11 +3,11 @@
 document.addEventListener("copy", async () => {
   const text = await navigator.clipboard.readText();
 
-  if (chrome.runtime.sendMessage) {
-    await chrome.runtime.sendMessage(
-      Request.create(Request.ACTIONS.NEW_CONTENT, text)
-    );
-  }
+  if (!chrome.runtime.sendMessage) return;
+
+  await chrome.runtime.sendMessage(
+    Request.create(Request.ACTIONS.NEW_CONTENT, text)
+  );
 });
 
 class Request {
