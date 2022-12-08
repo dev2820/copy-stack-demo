@@ -39,9 +39,13 @@ class CopiedItemElement extends HTMLElement {
 customElements.define("copied-item", CopiedItemElement);
 
 function toClipboard(data) {
-  window.navigator.clipboard.write([
-    new ClipboardItem({
-      [data.type || "text/plain"]: data,
-    }),
-  ]);
+  if (data instanceof Blob) {
+    window.navigator.clipboard.write([
+      new ClipboardItem({
+        [data.type || "text/plain"]: data,
+      }),
+    ]);
+  } else {
+    window.navigator.clipboard.writeText(data);
+  }
 }
