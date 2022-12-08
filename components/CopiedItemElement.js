@@ -18,7 +18,7 @@ class CopiedItemElement extends HTMLElement {
     const $deleteButton = $container.querySelector(".delete");
 
     $copyButton.addEventListener("click", () => {
-      window.navigator.clipboard.writeText(data.content);
+      toClipboard(data.content);
     });
     $deleteButton.addEventListener("click", () => {
       window.dispatchEvent(
@@ -32,3 +32,11 @@ class CopiedItemElement extends HTMLElement {
 }
 
 customElements.define("copied-item", CopiedItemElement);
+
+function toClipboard(data) {
+  window.navigator.clipboard.write([
+    new ClipboardItem({
+      [data.type || "text/plain"]: data,
+    }),
+  ]);
+}
