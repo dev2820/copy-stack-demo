@@ -25,7 +25,12 @@ class CopiedItemElement extends HTMLElement {
         new CustomEvent("deleteitem", { detail: { id: data.id } })
       );
     });
-    $content.textContent = data.content;
+
+    if (data.content instanceof Blob) {
+      $content.textContent = data.content.type;
+    } else {
+      $content.textContent = data.content;
+    }
 
     this.appendChild($container);
   }
