@@ -1,31 +1,36 @@
-const req = indexedDB.open("ITEM_LIST");
-let db = null;
-req.onerror = () => {
-  alert("Why didn't you allow my web app to use IndexedDB?!");
-};
-req.onsuccess = () => {
-  db = req.result;
-};
-req.onupgradeneeded = (evt) => {
-  db = evt.target.result;
-  const objectStore = db.createObjectStore("items", {
-    keyPath: "id",
-    autoIncrement: true,
-  });
+const getDB = (() => {
+  let db = null;
 
-  // 인덱스 생성 코드
-  // objectStore.createIndex("created", "created", { unique: true });
+  return async () => {
+    if (!db) {
+      db = await new Promise((resolve, reject) => {
+        const req = indexedDB.open("ITEM_LIST");
 
-  objectStore.transaction.oncomplete = () => {
-    const itemStore = db.transaction("items", "readwrite").objectStore("items");
-    [{ created: 10, id: 1 }, { created: 20 }].forEach((item) => {
-      itemStore.add(item);
-    });
+        req.onerror = () => {
+          reject(null);
+        };
+        req.onsuccess = () => {
+          resolve(req.result);
+        };
+        req.onupgradeneeded = (evt) => {
+          const _db = evt.target.result;
+          _db.createObjectStore("items", {
+            keyPath: "id",
+            autoIncrement: true,
+          });
+        };
+      });
+    }
+
+    return db;
   };
-};
+})();
 
-export function add(item) {
-  return new Promise((resolve, reject) => {
+export async function add(item) {
+  return new Promise(async (resolve, reject) => {
+    const db = await getDB();
+    if (!db) reject(false);
+
     const transaction = db.transaction(["items"], "readwrite");
     const itemStore = transaction.objectStore("items");
     const request = itemStore.add(item);
@@ -39,8 +44,11 @@ export function add(item) {
   });
 }
 
-export function remove(key) {
-  return new Promise((resolve, reject) => {
+export async function remove(key) {
+  return new Promise(async (resolve, reject) => {
+    const db = await getDB();
+    if (!db) reject(false);
+
     const transaction = db.transaction(["items"], "readwrite");
     const itemStore = transaction.objectStore("items");
     const request = itemStore.delete(key);
@@ -54,8 +62,11 @@ export function remove(key) {
   });
 }
 
-export function get(key) {
-  return new Promise((resolve, reject) => {
+export async function get(key) {
+  return new Promise(async (resolve, reject) => {
+    const db = await getDB();
+    if (!db) reject(false);
+
     const transaction = db.transaction(["items"]);
     const objectStore = transaction.objectStore("items");
     const request = objectStore.get(key);
@@ -69,8 +80,11 @@ export function get(key) {
   });
 }
 
-export function getAll() {
-  return new Promise((resolve, reject) => {
+export async function getAll() {
+  return new Promise(async (resolve, reject) => {
+    const db = await getDB();
+    if (!db) reject(false);
+
     const transaction = db.transaction(["items"]);
     const objectStore = transaction.objectStore("items");
     const request = objectStore.getAll();
