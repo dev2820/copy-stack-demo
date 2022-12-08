@@ -1,6 +1,8 @@
 const channel = new BroadcastChannel("MY_BROADCAST");
 channel.onmessage = (msg) => {
-  console.log("channel", msg);
+  if (msg.data.action === "GET_CONTENT_LIST") {
+    render(msg.data.payload);
+  }
 };
 
 window.onload = async () => {
