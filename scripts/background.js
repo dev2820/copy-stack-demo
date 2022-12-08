@@ -6,6 +6,7 @@ const RESPONSE = {
   DELETE: "DELETE",
 };
 chrome.runtime.onInstalled.addListener(() => {
+  const channel = new BroadcastChannel("MY_BROADCAST");
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     switch (message.action) {
       case RESPONSE.NEW_CONTENT: {
@@ -15,7 +16,8 @@ chrome.runtime.onInstalled.addListener(() => {
       }
       case RESPONSE.GET_CONTENT_LIST: {
         itemRepo.getAll().then((itemList) => {
-          sendResponse(itemList);
+          channel.postMessage(itemList);
+          sendResponse(true);
         });
 
         return true;

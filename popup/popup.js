@@ -1,3 +1,7 @@
+const channel = new BroadcastChannel("MY_BROADCAST");
+channel.onmessage = (msg) => {
+  console.log("channel", msg);
+};
 window.onload = async () => {
   const contentList = await getContentList();
   render(contentList);
