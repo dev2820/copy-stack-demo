@@ -6,11 +6,11 @@ document.addEventListener("copy", async () => {
   if (!chrome.runtime.sendMessage) return;
 
   await chrome.runtime.sendMessage(
-    Request.create(Request.ACTIONS.NEW_CONTENT, text)
+    Requester.create(Requester.ACTIONS.NEW_CONTENT, text)
   );
 });
 
-class Request {
+class Requester {
   static ACTIONS = {
     NEW_CONTENT: "NEW_CONTENT",
   };
