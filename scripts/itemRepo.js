@@ -13,7 +13,8 @@ req.onupgradeneeded = (evt) => {
     autoIncrement: true,
   });
 
-  objectStore.createIndex("created", "created", { unique: true });
+  // 인덱스 생성 코드
+  // objectStore.createIndex("created", "created", { unique: true });
 
   objectStore.transaction.oncomplete = () => {
     const itemStore = db.transaction("items", "readwrite").objectStore("items");
