@@ -16,7 +16,10 @@ chrome.runtime.onInstalled.addListener(() => {
       }
       case RESPONSE.GET_CONTENT_LIST: {
         itemRepo.getAll().then((itemList) => {
-          channel.postMessage(itemList);
+          channel.postMessage({
+            action: "GET_CONTENT_LIST",
+            payload: itemList,
+          });
           sendResponse(true);
         });
 
