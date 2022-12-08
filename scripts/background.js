@@ -10,11 +10,12 @@ chrome.runtime.onInstalled.addListener(() => {
     switch (message.action) {
       case RESPONSE.NEW_CONTENT: {
         itemRepo.add({ created: new Date(), content: message.payload });
+        sendResponse(true);
         return false;
       }
       case RESPONSE.GET_CONTENT_LIST: {
-        itemRepo.getAll().then((items) => {
-          sendResponse(items);
+        itemRepo.getAll().then((itemList) => {
+          sendResponse(itemList);
         });
 
         return true;
@@ -27,6 +28,8 @@ chrome.runtime.onInstalled.addListener(() => {
         return true;
       }
     }
+
+    return true;
   });
 
   chrome.contextMenus.create({
@@ -36,16 +39,17 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   chrome.contextMenus.onClicked.addListener(async (info) => {
-    console.log(info);
     if (info.menuItemId === "MyContext") {
       if (info.selectionText) {
         itemRepo.add({ created: new Date(), content: info.selectionText });
       } else if (info.mediaType === "image") {
         const image = await fetch(info.srcUrl);
         const blob = await image.blob();
-        console.log(blob);
 
-        itemRepo.add({ created: new Date(), content: blob });
+        itemRepo.add({
+          created: new Date(),
+          content: blob,
+        });
       }
     }
 
