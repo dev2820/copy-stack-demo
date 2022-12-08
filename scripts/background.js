@@ -42,24 +42,33 @@ chrome.runtime.onInstalled.addListener(() => {
     id: "Store",
     contexts: ["selection", "image"],
   });
+});
 
-  chrome.contextMenus.onClicked.addListener(async (info) => {
-    if (info.menuItemId === "Store") {
-      if (info.selectionText) {
-        itemRepo.add({ created: new Date(), content: info.selectionText });
-      } else if (info.mediaType === "image") {
-        const image = await fetch(info.srcUrl);
-        const blob = await image.blob();
+chrome.contextMenus.onClicked.addListener(async (info) => {
+  if (info.menuItemId === "Store") {
+    if (info.selectionText) {
+      await itemRepo.add({
+        created: new Date(),
+        content: info.selectionText,
+      });
+    } else if (info.mediaType === "image") {
+      const image = await fetch(info.srcUrl);
+      const blob = await image.blob();
 
-        itemRepo.add({
-          created: new Date(),
-          content: blob,
-        });
-      }
+      await itemRepo.add({
+        created: new Date(),
+        content: blob,
+      });
     }
 
-    return true;
-  });
+    const result = await itemRepo.getAll();
+    channel.postMessage({
+      action: "GET_CONTENT_LIST",
+      payload: await itemRepo.getAll(),
+    });
+  }
+
+  return true;
 });
 
 /**
@@ -73,4 +82,8 @@ chrome.runtime.onInstalled.addListener(() => {
 /**
  * Clipboard에는 text/plain, text/html, image/png 만 사용 가능하다고 함
  * https://developer.chrome.com/blog/web-custom-formats-for-the-async-clipboard-api/
+ */
+/**
+ * listener를 추가하는 작업은 다른 listener 내부에서 하면 안된다고함
+ * https://stackoverflow.com/questions/69002482/chrome-extension-contextmenu-listener-not-working-after-few-minutes
  */
