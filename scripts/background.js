@@ -63,3 +63,7 @@ chrome.runtime.onInstalled.addListener(() => {
  * onMessage에서 비동기를 쓰려면 return true를 해줘야한다함
  * https://stackoverflow.com/questions/48107746/chrome-extension-message-not-sending-response-undefined
  */
+/**
+ * blob 데이터는 chrome.runtime.sendMessage를 통해서는 전송이 불가능하다고 함
+ * https://groups.google.com/a/chromium.org/g/chromium-extensions/c/8hu2skfKrQ8
+ */
