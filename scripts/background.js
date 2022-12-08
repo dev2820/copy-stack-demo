@@ -38,13 +38,13 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   chrome.contextMenus.create({
-    title: "My Context Menu",
-    id: "MyContext",
+    title: "store to Copy Stack",
+    id: "Store",
     contexts: ["selection", "image"],
   });
 
   chrome.contextMenus.onClicked.addListener(async (info) => {
-    if (info.menuItemId === "MyContext") {
+    if (info.menuItemId === "Store") {
       if (info.selectionText) {
         itemRepo.add({ created: new Date(), content: info.selectionText });
       } else if (info.mediaType === "image") {
