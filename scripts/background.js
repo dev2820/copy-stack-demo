@@ -70,3 +70,7 @@ chrome.runtime.onInstalled.addListener(() => {
  * blob 데이터는 chrome.runtime.sendMessage를 통해서는 전송이 불가능하다고 함
  * https://groups.google.com/a/chromium.org/g/chromium-extensions/c/8hu2skfKrQ8
  */
+/**
+ * Clipboard에는 text/plain, text/html, image/png 만 사용 가능하다고 함
+ * https://developer.chrome.com/blog/web-custom-formats-for-the-async-clipboard-api/
+ */
