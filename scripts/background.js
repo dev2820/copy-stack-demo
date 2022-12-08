@@ -5,38 +5,38 @@ const RESPONSE = {
   GET_CONTENT_LIST: "GET_CONTENT_LIST",
   DELETE: "DELETE",
 };
-chrome.runtime.onInstalled.addListener(() => {
-  const channel = new BroadcastChannel("MY_BROADCAST");
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    switch (message.action) {
-      case RESPONSE.NEW_CONTENT: {
-        itemRepo.add({ created: new Date(), content: message.payload });
-        sendResponse(true);
-        return false;
-      }
-      case RESPONSE.GET_CONTENT_LIST: {
-        itemRepo.getAll().then((itemList) => {
-          channel.postMessage({
-            action: "GET_CONTENT_LIST",
-            payload: itemList,
-          });
-          sendResponse(true);
-        });
-
-        return true;
-      }
-      case RESPONSE.DELETE: {
-        itemRepo
-          .remove(message.payload)
-          .then((isSuccess) => sendResponse(isSuccess));
-
-        return true;
-      }
+const channel = new BroadcastChannel("MY_BROADCAST");
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  switch (message.action) {
+    case RESPONSE.NEW_CONTENT: {
+      itemRepo.add({ created: new Date(), content: message.payload });
+      sendResponse(true);
+      return false;
     }
+    case RESPONSE.GET_CONTENT_LIST: {
+      itemRepo.getAll().then((itemList) => {
+        channel.postMessage({
+          action: "GET_CONTENT_LIST",
+          payload: itemList,
+        });
+        sendResponse(true);
+      });
 
-    return true;
-  });
+      return true;
+    }
+    case RESPONSE.DELETE: {
+      itemRepo
+        .remove(message.payload)
+        .then((isSuccess) => sendResponse(isSuccess));
 
+      return true;
+    }
+  }
+
+  return true;
+});
+
+chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     title: "store to Copy Stack",
     id: "Store",
