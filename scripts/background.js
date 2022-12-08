@@ -32,6 +32,24 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     title: "My Context Menu",
     id: "MyContext",
+    contexts: ["selection", "image"],
+  });
+
+  chrome.contextMenus.onClicked.addListener(async (info) => {
+    console.log(info);
+    if (info.menuItemId === "MyContext") {
+      if (info.selectionText) {
+        itemRepo.add({ created: new Date(), content: info.selectionText });
+      } else if (info.mediaType === "image") {
+        const image = await fetch(info.srcUrl);
+        const blob = await image.blob();
+        console.log(blob);
+
+        itemRepo.add({ created: new Date(), content: blob });
+      }
+    }
+
+    return true;
   });
 });
 
