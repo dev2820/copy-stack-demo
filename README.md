@@ -1,5 +1,7 @@
 # copy-stack
 
+this is demo repo for testing copy stack's new functions 
+
 chrome extension that allow you to stack and recall copied content
 
 ## icon 생성 규칙
